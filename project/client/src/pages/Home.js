@@ -5,6 +5,7 @@ import { getAllMovies } from "../calls/movies";
 import { message, Row, Col, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
+import { GetCurrentUser } from "../calls/users";
 import moment from "moment";
 
 const Home = () => {
@@ -12,6 +13,26 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const checkUser = async () => {
+    try {
+      const response = await GetCurrentUser();
+      if (response.success) {
+        const user = response.data;
+        if (user.role === "admin" || user.role === "partner") {
+          message.error("You are not authorized to view this page");
+          navigate("/" + user.role);
+        }
+      }
+    } catch (error) {
+      message.error(error.message);
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   const getData = async () => {
     try {

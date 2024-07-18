@@ -1,31 +1,34 @@
-import { Tabs } from 'antd';
-import TheatreList from './TheatreList';
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Tabs } from "antd";
+import TheatreList from "./TheatreList";
 
 const Partner = () => {
-    // const onChange = (key) => {
-    //     console.log(key);
-    //   };
-      const items = [
-        {
-          key: '1',
-          label: 'Theatres',
-          children: <TheatreList/>,
-        }
-        
-        // {
-        //   key: '3',
-        //   label: 'Tab 3',
-        //   children: 'Content of Tab Pane 3',
-        // },
-      ];
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
 
-    return (
-        <>
-        <h1>Partner Page</h1>
-            <Tabs defaultActiveKey="2" items={items} />
-        </>
-    )
-}
+  useEffect(() => {
+    if (user.role === "user") {
+      navigate("/");
+    } else if (user.role === "admin") {
+      navigate("/admin");
+    }
+  }, []);
+  const items = [
+    {
+      key: "1",
+      label: "Theatres",
+      children: <TheatreList />,
+    },
+  ];
+
+  return (
+    <>
+      <h1>Partner Page</h1>
+      <Tabs defaultActiveKey="2" items={items} />
+    </>
+  );
+};
 
 export default Partner;

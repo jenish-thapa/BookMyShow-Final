@@ -23,6 +23,16 @@ function ProtectedRoute({ children }) {
     {
       label: "Home",
       icon: <HomeOutlined />,
+      label: (
+        <Link
+          to="/"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Home
+        </Link>
+      ),
     },
 
     {
@@ -32,15 +42,15 @@ function ProtectedRoute({ children }) {
         {
           label: (
             <span
-            onClick={() => {
-              if (user.role === 'admin') {
-                navigate("/admin");
-              } else if (user.role === 'partner') {
-                navigate("/partner");
-              } else {
-                navigate("/profile");
-              }
-            }}
+              onClick={() => {
+                if (user.role === "admin") {
+                  navigate("/admin");
+                } else if (user.role === "partner") {
+                  navigate("/partner");
+                } else {
+                  navigate("/profile");
+                }
+              }}
             >
               My Profile
             </span>
@@ -69,7 +79,7 @@ function ProtectedRoute({ children }) {
     try {
       dispatch(showLoading());
       const response = await GetCurrentUser();
-      console.log(response)
+      console.log(response);
       dispatch(setUser(response.data));
       dispatch(hideLoading());
       // Hide Loader
@@ -103,7 +113,7 @@ function ProtectedRoute({ children }) {
             }}
           >
             <h3 className="demo-logo text-white m-0" style={{ color: "white" }}>
-              Book My Show
+              BMS
             </h3>
             <Menu theme="dark" mode="horizontal" items={navItems} />
           </Header>
